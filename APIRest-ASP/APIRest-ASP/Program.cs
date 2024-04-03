@@ -1,6 +1,8 @@
+using APIRest_ASP.Business;
+using APIRest_ASP.Business.Implementations;
 using APIRest_ASP.Model.Context;
-using APIRest_ASP.Services;
-using APIRest_ASP.Services.Implementations;
+using APIRest_ASP.Repository;
+using APIRest_ASP.Repository.Implementations;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,7 +20,8 @@ builder.Services.AddDbContext<MySQLContext>(options => options.UseMySql(
 builder.Services.AddApiVersioning();
 
 //Injeção de dependencia
-builder.Services.AddScoped<IPersonService, PersonServiceImplementation>();
+builder.Services.AddScoped<IPersonBusiness, PersonBusinessImplementation>();
+builder.Services.AddScoped<IPersonRepository, PersonRepositoryImplementation>();
 
 var app = builder.Build();
 
