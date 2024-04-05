@@ -3,23 +3,34 @@ using APIRest_ASP.Business.Implementations;
 using APIRest_ASP.Model.Context;
 using APIRest_ASP.Repository;
 using APIRest_ASP.Repository.Implementations;
+using EvolveDb;
+using EvolveDb.Migration;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
+using MySqlConnector;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
 builder.Services.AddControllers();
 
-//Conexão no banco de dados MySQL
 var connection = builder.Configuration["MySQLConnection:MySQLConnectionString"];
 builder.Services.AddDbContext<MySQLContext>(options => options.UseMySql(
     connection,
-    new MySqlServerVersion(new Version(8,0,29))));
+    new MySqlServerVersion(new Version(8, 0, 29)))
+);
 
-//Versionamento
+if (builder.Environment.IsDevelopment())
+{
+    MigrateDatabase(connection);
+}
+
+//Versioning API
 builder.Services.AddApiVersioning();
 
-//Injeção de dependencia
+//Dependency Injection
 builder.Services.AddScoped<IPersonBusiness, PersonBusinessImplementation>();
 builder.Services.AddScoped<IPersonRepository, PersonRepositoryImplementation>();
 
@@ -34,3 +45,22 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+void MigrateDatabase(string connection)
+{
+    try
+    {
+        var evolveConnection = new MySqlConnection(connection);
+        var evolve = new Evolve(evolveConnection, Log.Information)
+        {
+            Locations = new List<string> { "db/migrations", "db/dataset" },
+            IsEraseDisabled = true,
+        };
+        evolve.Migrate();
+    }
+    catch (Exception ex)
+    {
+        Log.Error("Database migration failed", ex);
+        throw;
+    }
+}

@@ -6,6 +6,7 @@ namespace APIRest_ASP.Repository.Implementations
 {
     public class PersonRepositoryImplementation : IPersonRepository
     {
+
         private MySQLContext _context;
 
         public PersonRepositoryImplementation(MySQLContext context)
@@ -16,13 +17,13 @@ namespace APIRest_ASP.Repository.Implementations
         // Method responsible for returning all people,
         public List<Person> FindAll()
         {
-            return _context.persons.ToList();
+            return _context.Persons.ToList();
         }
 
         // Method responsible for returning one person by ID
         public Person FindByID(long id)
         {
-            return _context.persons.SingleOrDefault(p => p.Id.Equals(id));
+            return _context.Persons.SingleOrDefault(p => p.Id.Equals(id));
         }
 
         // Method responsible to crete one new person
@@ -48,7 +49,7 @@ namespace APIRest_ASP.Repository.Implementations
             if (!Exists(person.Id)) return null;
 
             // Get the current status of the record in the database
-            var result = _context.persons.SingleOrDefault(p => p.Id.Equals(person.Id));
+            var result = _context.Persons.SingleOrDefault(p => p.Id.Equals(person.Id));
             if (result != null)
             {
                 try
@@ -68,12 +69,12 @@ namespace APIRest_ASP.Repository.Implementations
         // Method responsible for deleting a person from an ID
         public void Delete(long id)
         {
-            var result = _context.persons.SingleOrDefault(p => p.Id.Equals(id));
+            var result = _context.Persons.SingleOrDefault(p => p.Id.Equals(id));
             if (result != null)
             {
                 try
                 {
-                    _context.persons.Remove(result);
+                    _context.Persons.Remove(result);
                     _context.SaveChanges();
                 }
                 catch (Exception)
@@ -84,7 +85,7 @@ namespace APIRest_ASP.Repository.Implementations
         }
         public bool Exists(long id)
         {
-            return _context.persons.Any(p => p.Id.Equals(id));
+            return _context.Persons.Any(p => p.Id.Equals(id));
         }
     }
 }

@@ -8,6 +8,7 @@ namespace APIRest_ASP.Business.Implementations
 {
     public class PersonBusinessImplementation : IPersonBusiness
     {
+
         private readonly IPersonRepository _repository;
 
         public PersonBusinessImplementation(IPersonRepository repository)
