@@ -24,14 +24,17 @@ namespace APIRest_ASP.Controllers
             _personBusiness = personBusiness;
         }
 
-        //https://localhost:{port}/api/person
+        // Maps GET requests to https://localhost:{port}/api/person
+        // Get no parameters for FindAll -> Search All
         [HttpGet]
         public IActionResult Get()
         {
             return Ok(_personBusiness.FindAll());
         }
 
-        //https://localhost:{port}/api/person/{id}
+        // Maps GET requests to https://localhost:{port}/api/person/{id}
+        // receiving an ID as in the Request Path
+        // Get with parameters for FindById -> Search by ID
         [HttpGet("{id}")]
         public IActionResult Get(long id)
         {
@@ -59,6 +62,7 @@ namespace APIRest_ASP.Controllers
         }
 
         // Maps DELETE requests to https://localhost:{port}/api/person/{id}
+        // receiving an ID as in the Request Path
         [HttpDelete("{id}")]
         public IActionResult Delete(long id)
         {
