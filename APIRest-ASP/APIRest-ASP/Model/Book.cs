@@ -1,12 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using APIRest_ASP.Model.Base;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace APIRest_ASP.Model
 {
     [Table("book")]
-    public class Book
+    public class Book : BaseEntity
     {
-        [Column("id")]
-        public long Id { get; set; }
 
         [Column("title")]
         public string Title { get; set; }

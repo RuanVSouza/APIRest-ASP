@@ -1,6 +1,7 @@
-﻿    using APIRest_ASP.Model;
+﻿using APIRest_ASP.Model;
 using APIRest_ASP.Model.Context;
 using APIRest_ASP.Repository;
+using APIRest_ASP.Repository.Generic;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using System;
 
@@ -9,9 +10,9 @@ namespace APIRest_ASP.Business.Implementations
     public class PersonBusinessImplementation : IPersonBusiness
     {
 
-        private readonly IPersonRepository _repository;
+        private readonly IRepository<Person> _repository;
 
-        public PersonBusinessImplementation(IPersonRepository repository)
+        public PersonBusinessImplementation(IRepository<Person> repository)
         {
             _repository = repository;
         }

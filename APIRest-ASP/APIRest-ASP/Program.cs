@@ -2,6 +2,7 @@ using APIRest_ASP.Business;
 using APIRest_ASP.Business.Implementations;
 using APIRest_ASP.Model.Context;
 using APIRest_ASP.Repository;
+using APIRest_ASP.Repository.Generic;
 using APIRest_ASP.Repository.Implementations;
 using EvolveDb;
 using EvolveDb.Migration;
@@ -30,12 +31,15 @@ if (builder.Environment.IsDevelopment())
 //Versioning API
 builder.Services.AddApiVersioning();
 
-//Dependency Injection
+//Dependency Injection - Bussines
 builder.Services.AddScoped<IPersonBusiness, PersonBusinessImplementation>();
 builder.Services.AddScoped<IBookBusiness, BookBusinessImplementation>();
 
-builder.Services.AddScoped<IPersonRepository, PersonRepositoryImplementation>();
-builder.Services.AddScoped<IBookRepository, BookRepositoryImplementation>();
+//Dependency Injection - Repository
+//builder.Services.AddScoped<IPersonRepository, PersonRepositoryImplementation>();
+
+//Dependency Injection - Repository Generic
+builder.Services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
 
 var app = builder.Build();
 
