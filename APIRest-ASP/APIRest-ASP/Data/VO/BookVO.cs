@@ -1,7 +1,5 @@
 ﻿using APIRest_ASP.Hypermedia.Abstract;
 using APIRest_ASP.HyperMedia;
-using APIRest_ASP.Model.Base;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace APIRest_ASP.Data.VO

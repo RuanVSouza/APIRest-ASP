@@ -4,8 +4,10 @@ namespace APIRest_ASP.HyperMedia
 {
     public class HyperMediaLink
     {
-        public string Rel {  get; set; }    
-        private string Href
+        public string Rel { get; set; }
+
+        private string href;
+        public string Href
         {
             get
             {
@@ -13,13 +15,15 @@ namespace APIRest_ASP.HyperMedia
                 lock (_lock)
                 {
                     StringBuilder sb = new StringBuilder(href);
-                    return sb.Replace("%2f", "/").ToString();
+                    return sb.Replace("%2F", "/").ToString();
                 }
             }
-            set { href = value; }
+            set
+            {
+                href = value;
+            }
         }
-        public string href; //somente para manipular internamente  
-        public string Type {  get; set; }    
+        public string Type { get; set; }
         public string Action { get; set; }
     }
 }

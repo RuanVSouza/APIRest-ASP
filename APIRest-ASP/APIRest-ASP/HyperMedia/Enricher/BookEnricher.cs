@@ -7,50 +7,49 @@ namespace APIRest_ASP.HyperMedia.Enricher
 {
     public class BookEnricher : ContentResponseEnricher<BookVO>
     {
-
-        private readonly object _lock = new object();
-
         protected override Task EnrichModel(BookVO content, IUrlHelper urlHelper)
         {
-            var path = "api/book/v1";
-            string link = getLink(content.Id, urlHelper, path);
-            
-            //Verbo GET
+            var path = "api/book";
+            string link = GetLink(content.Id, urlHelper, path);
+
             content.Links.Add(new HyperMediaLink()
             {
                 Action = HttpActionVerb.GET,
-                href = link,
+                Href = link,
                 Rel = RelationType.self,
-                Type = ResponseTypeFormat.DefaultGet,
+                Type = ResponseTypeFormat.DefaultGet
             });
-            
-            //Verbo POST
             content.Links.Add(new HyperMediaLink()
             {
                 Action = HttpActionVerb.POST,
-                href = link,
+                Href = link,
                 Rel = RelationType.self,
-                Type = ResponseTypeFormat.DefaultPost,
+                Type = ResponseTypeFormat.DefaultPost
             });
-
-            //Verbo PUT
             content.Links.Add(new HyperMediaLink()
             {
                 Action = HttpActionVerb.PUT,
-                href = link,
+                Href = link,
                 Rel = RelationType.self,
-                Type = ResponseTypeFormat.DefaultPut,
+                Type = ResponseTypeFormat.DefaultPut
             });
-            return null;
+            content.Links.Add(new HyperMediaLink()
+            {
+                Action = HttpActionVerb.DELETE,
+                Href = link,
+                Rel = RelationType.self,
+                Type = "int"
+            });
+            return Task.CompletedTask;
         }
 
-        private string getLink(long id, IUrlHelper urlHelper, string path)
+        private string GetLink(long id, IUrlHelper urlHelper, string path)
         {
-            lock (_lock)
+            lock (this)
             {
-                var url = new { controller = path, id = id };
-                return new StringBuilder(urlHelper.Link("DefaultApi", url)).Replace("%2f", "/").ToString();
-            }
+                var url = new { controller = path, id };
+                return new StringBuilder(urlHelper.Link("DefaultApi", url)).Replace("%2F", "/").ToString();
+            };
         }
     }
 }

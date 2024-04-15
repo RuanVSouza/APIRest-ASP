@@ -39,6 +39,7 @@ builder.Services.AddMvc(options =>
 
 var filterOptions = new HyperMediaFilterOptions();
 filterOptions.ContentResponseEnricherList.Add(new PersonEnricher());
+filterOptions.ContentResponseEnricherList.Add(new BookEnricher());
 
 builder.Services.AddSingleton(filterOptions);
 
@@ -64,7 +65,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-app.MapControllerRoute("DefaultApi", "{controller = values}/{id?}");
+app.MapControllerRoute("DefaultApi", "{controller=values}/v{version=apiVersion}/{id?}");
 
 app.Run();
 

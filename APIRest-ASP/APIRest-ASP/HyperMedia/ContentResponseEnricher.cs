@@ -8,9 +8,11 @@ namespace APIRest_ASP.HyperMedia
 {
     public abstract class ContentResponseEnricher<T> : IResponseEnricher where T : ISuportHypermedia
     {
-        public ContentResponseEnricher() { }
+        public ContentResponseEnricher()
+        {
 
-        public bool CanEnrich(Type contentType)
+        }
+        public virtual bool CanEnrich(Type contentType)
         {
             return contentType == typeof(T) || contentType == typeof(List<T>);
         }
@@ -19,31 +21,30 @@ namespace APIRest_ASP.HyperMedia
 
         bool IResponseEnricher.CanEnrich(ResultExecutingContext response)
         {
-            if(response.Result is OkObjectResult okObjectResult)
+            if (response.Result is OkObjectResult okObjectResult)
             {
                 return CanEnrich(okObjectResult.Value.GetType());
             }
             return false;
         }
-
-        public async Task Enrich(ResultExecutingContext response)   
+        public async Task Enrich(ResultExecutingContext response)
         {
             var urlHelper = new UrlHelperFactory().GetUrlHelper(response);
-
             if (response.Result is OkObjectResult okObjectResult)
             {
-                if(okObjectResult.Value is T model)
+                if (okObjectResult.Value is T model)
                 {
                     await EnrichModel(model, urlHelper);
                 }
-                else if(okObjectResult.Value is List<T> collection)
+                else if (okObjectResult.Value is List<T> collection)
                 {
-                ConcurrentBag<T> bag = new ConcurrentBag<T>(collection);
-                Parallel.ForEach(bag, (element) =>
-                    EnrichModel(element, urlHelper));
+                    ConcurrentBag<T> bag = new ConcurrentBag<T>(collection);
+                    Parallel.ForEach(bag, (element) =>
+                    {
+                        EnrichModel(element, urlHelper);
+                    });
                 }
             }
-            
             await Task.FromResult<object>(null);
         }
     
