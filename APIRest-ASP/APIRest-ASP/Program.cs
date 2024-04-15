@@ -1,13 +1,9 @@
 using APIRest_ASP.Business;
 using APIRest_ASP.Business.Implementations;
 using APIRest_ASP.Model.Context;
-using APIRest_ASP.Repository;
 using APIRest_ASP.Repository.Generic;
-using APIRest_ASP.Repository.Implementations;
 using EvolveDb;
-using EvolveDb.Migration;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualBasic;
 using MySqlConnector;
 using Serilog;
 
