@@ -1,11 +1,13 @@
-﻿using APIRest_ASP.Model.Base;
+﻿using APIRest_ASP.Hypermedia.Abstract;
+using APIRest_ASP.HyperMedia;
+using APIRest_ASP.Model.Base;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace APIRest_ASP.Data.VO
 {
 
-    public class PersonVO
+    public class PersonVO : ISuportHypermedia
     {
         [JsonPropertyName("code")]
         public long Id { get; set; }
@@ -21,6 +23,7 @@ namespace APIRest_ASP.Data.VO
 
         [JsonPropertyName("gender")]
         public string Gender { get; set; }
-
+        
+        public List<HyperMediaLink> Links { get; set ; } = new List<HyperMediaLink>();
     }
 }

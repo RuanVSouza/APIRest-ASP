@@ -1,5 +1,6 @@
 using APIRest_ASP.Business;
 using APIRest_ASP.Data.VO;
+using APIRest_ASP.HyperMedia.Filters;
 using APIRest_ASP.Model;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
@@ -28,6 +29,7 @@ namespace APIRest_ASP.Controllers
         // Maps GET requests to https://localhost:{port}/api/person
         // Get no parameters for FindAll -> Search All
         [HttpGet]
+        [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Get()
         {
             return Ok(_personBusiness.FindAll());
@@ -37,6 +39,7 @@ namespace APIRest_ASP.Controllers
         // receiving an ID as in the Request Path
         // Get with parameters for FindById -> Search by ID
         [HttpGet("{id}")]
+        [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Get(long id)
         {
             var person = _personBusiness.FindByID(id);
@@ -47,6 +50,7 @@ namespace APIRest_ASP.Controllers
         // Maps POST requests to https://localhost:{port}/api/person/
         // [FromBody] consumes the JSON object sent in the request body
         [HttpPost]
+        [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Post([FromBody] PersonVO person)
         {
             if (person == null) return BadRequest();
@@ -56,6 +60,7 @@ namespace APIRest_ASP.Controllers
         // Maps PUT requests to https://localhost:{port}/api/person/
         // [FromBody] consumes the JSON object sent in the request body
         [HttpPut]
+        [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Put([FromBody] PersonVO person)
         {
             if (person == null) return BadRequest();

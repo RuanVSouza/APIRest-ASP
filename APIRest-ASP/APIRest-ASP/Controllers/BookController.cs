@@ -1,5 +1,6 @@
 using APIRest_ASP.Business;
 using APIRest_ASP.Data.VO;
+using APIRest_ASP.HyperMedia.Filters;
 using APIRest_ASP.Model;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
@@ -25,6 +26,7 @@ namespace APIRest_ASP.Controllers
 
         //https://localhost:{port}/api/book
         [HttpGet]
+        [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Get()
         {
             return Ok(_bookBusiness.FindAll());
@@ -32,6 +34,7 @@ namespace APIRest_ASP.Controllers
 
         //https://localhost:{port}/api/book/{id}
         [HttpGet("{id}")]
+        [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Get(long id)
         {
             var book = _bookBusiness.FindByID(id);
@@ -42,6 +45,7 @@ namespace APIRest_ASP.Controllers
         // Maps POST requests to https://localhost:{port}/api/book/
         // [FromBody] consumes the JSON object sent in the request body
         [HttpPost]
+        [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Post([FromBody] BookVO book)
         {
             if (book == null) return BadRequest();
@@ -51,6 +55,7 @@ namespace APIRest_ASP.Controllers
         // Maps PUT requests to https://localhost:{port}/api/book/
         // [FromBody] consumes the JSON object sent in the request body
         [HttpPut]
+        [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Put([FromBody] BookVO book)
         {
             if (book == null) return BadRequest();

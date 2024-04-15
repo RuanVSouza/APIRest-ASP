@@ -1,5 +1,7 @@
 using APIRest_ASP.Business;
 using APIRest_ASP.Business.Implementations;
+using APIRest_ASP.HyperMedia.Enricher;
+using APIRest_ASP.HyperMedia.Filters;
 using APIRest_ASP.Model.Context;
 using APIRest_ASP.Repository.Generic;
 using EvolveDb;
@@ -34,6 +36,12 @@ builder.Services.AddMvc(options =>
     options.FormatterMappings.SetMediaTypeMappingForFormat("json", MediaTypeHeaderValue.Parse("application/json"));
 })
 .AddXmlSerializerFormatters();
+
+var filterOptions = new HyperMediaFilterOptions();
+filterOptions.ContentResponseEnricherList.Add(new PersonEnricher());
+
+builder.Services.AddSingleton(filterOptions);
+
 //Versioning API
 builder.Services.AddApiVersioning();
 
@@ -56,6 +64,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapControllerRoute("DefaultApi", "{controller = values}/{id?}");
 
 app.Run();
 
