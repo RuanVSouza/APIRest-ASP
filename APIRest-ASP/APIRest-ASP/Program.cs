@@ -4,8 +4,10 @@ using APIRest_ASP.Model.Context;
 using APIRest_ASP.Repository.Generic;
 using EvolveDb;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Net.Http.Headers;
 using MySqlConnector;
 using Serilog;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +26,14 @@ if (builder.Environment.IsDevelopment())
     MigrateDatabase(connection);
 }
 
+builder.Services.AddMvc(options =>
+{
+    options.RespectBrowserAcceptHeader = true;
+
+    options.FormatterMappings.SetMediaTypeMappingForFormat("xml", MediaTypeHeaderValue.Parse("application/xml"));
+    options.FormatterMappings.SetMediaTypeMappingForFormat("json", MediaTypeHeaderValue.Parse("application/json"));
+})
+.AddXmlSerializerFormatters();
 //Versioning API
 builder.Services.AddApiVersioning();
 
