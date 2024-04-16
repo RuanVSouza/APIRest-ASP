@@ -14,6 +14,8 @@ using Serilog;
 
 
 var builder = WebApplication.CreateBuilder(args);
+var appName = "APIRestFull ASP";
+var appVersion1 = "v1";
 
 // Add services to the container.
 
@@ -45,15 +47,23 @@ filterOptions.ContentResponseEnricherList.Add(new BookEnricher());
 
 builder.Services.AddSingleton(filterOptions);
 
+builder.Services.AddCors(options => options.AddDefaultPolicy(builder =>
+{
+    builder.AllowAnyOrigin()
+    .AllowAnyMethod()
+    .AllowAnyHeader();
+}));
+
 //Versioning API
 builder.Services.AddApiVersioning();
+builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1",
         new OpenApiInfo
         {
-            Title = "APIRestFull ASP",
-            Version = "v1",
+            Title = appName,
+            Version = appVersion1,
             Description = "APIRestFull ASP - Pratica",
             Contact = new OpenApiContact { Name = "Ruan" }
         });
@@ -72,6 +82,8 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 
 app.UseHttpsRedirection();
+
+app.UseCors();
 
 app.UseSwagger();
 app.UseSwaggerUI(c =>

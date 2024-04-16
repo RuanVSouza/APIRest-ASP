@@ -26,6 +26,10 @@ namespace APIRest_ASP.Controllers
 
         //https://localhost:{port}/api/book
         [HttpGet]
+        [ProducesResponseType(200, Type = typeof(List<BookVO>))]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
         [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Get()
         {
@@ -34,6 +38,10 @@ namespace APIRest_ASP.Controllers
 
         //https://localhost:{port}/api/book/{id}
         [HttpGet("{id}")]
+        [ProducesResponseType(200, Type = typeof(List<BookVO>))]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
         [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Get(long id)
         {
@@ -45,6 +53,9 @@ namespace APIRest_ASP.Controllers
         // Maps POST requests to https://localhost:{port}/api/book/
         // [FromBody] consumes the JSON object sent in the request body
         [HttpPost]
+        [ProducesResponseType(200, Type = typeof(List<BookVO>))]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
         [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Post([FromBody] BookVO book)
         {
@@ -55,6 +66,9 @@ namespace APIRest_ASP.Controllers
         // Maps PUT requests to https://localhost:{port}/api/book/
         // [FromBody] consumes the JSON object sent in the request body
         [HttpPut]
+        [ProducesResponseType(200, Type = typeof(List<BookVO>))]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
         [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Put([FromBody] BookVO book)
         {
@@ -64,6 +78,9 @@ namespace APIRest_ASP.Controllers
 
         // Maps DELETE requests to https://localhost:{port}/api/book/{id}
         [HttpDelete("{id}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
         public IActionResult Delete(long id)
         {
             _bookBusiness.Delete(id);
