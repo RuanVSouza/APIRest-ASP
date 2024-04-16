@@ -5,8 +5,10 @@ using APIRest_ASP.HyperMedia.Filters;
 using APIRest_ASP.Model.Context;
 using APIRest_ASP.Repository.Generic;
 using EvolveDb;
+using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Net.Http.Headers;
+using Microsoft.OpenApi.Models;
 using MySqlConnector;
 using Serilog;
 
@@ -45,13 +47,22 @@ builder.Services.AddSingleton(filterOptions);
 
 //Versioning API
 builder.Services.AddApiVersioning();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1",
+        new OpenApiInfo
+        {
+            Title = "APIRestFull ASP",
+            Version = "v1",
+            Description = "APIRestFull ASP - Pratica",
+            Contact = new OpenApiContact { Name = "Ruan" }
+        });
+});
+
 
 //Dependency Injection - Bussines
 builder.Services.AddScoped<IPersonBusiness, PersonBusinessImplementation>();
 builder.Services.AddScoped<IBookBusiness, BookBusinessImplementation>();
-
-//Dependency Injection - Repository
-//builder.Services.AddScoped<IPersonRepository, PersonRepositoryImplementation>();
 
 //Dependency Injection - Repository Generic
 builder.Services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
@@ -61,6 +72,16 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 
 app.UseHttpsRedirection();
+
+app.UseSwagger();
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "APIRestFull ASP");
+});
+
+var option = new RewriteOptions();
+option.AddRedirect("^$", "swagger");
+app.UseRewriter(option);
 
 app.UseAuthorization();
 
